@@ -62,7 +62,7 @@ class MachineStateController:
         return self.current_state == self.RUNNING
 
     def _is_rest(self) -> bool:
-        return self.rest_listener.is_rest
+        return False#self.rest_listener.is_rest
 
 
     def _handle_machine_on_stop(self) -> None:

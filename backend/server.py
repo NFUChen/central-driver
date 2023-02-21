@@ -5,7 +5,7 @@ from config import Config
 
 
 
-config = Config(15)
+config = Config(18)
 controller = MachineStateController(config)
 controller.run()
 app = Flask(__name__)
