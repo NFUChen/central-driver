@@ -36,6 +36,11 @@ def set_takt_time(takt_time: str):
     controller.receive_takt_time_modification_signal(float(takt_time))
     return controller.get_current_machine_state_report(), 200
 
+@app.route("/restart")
+def restart():
+    controller.restart()
+    return controller.get_current_machine_state_report(), 200
+
 @app.route("/report")
 def report():
     return controller.get_current_machine_state_report(), 200

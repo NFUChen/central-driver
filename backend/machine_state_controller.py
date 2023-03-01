@@ -4,21 +4,24 @@ from threading import Thread
 
 from config import Config
 from timer import Timer
-from rest_listener import RestListener
+from server_listener import ServerListener
 
 class MachineStateController:
     STOP = "stop"
     RUNNING = "running"
     REST = "rest"
+    HAND_OVER = "hand_over"
     def __init__(self, config: Config) -> None:
         
         self.state_with_validator: dict[str,Callable] = {
+            self.HAND_OVER: self._is_hand_over,
             self.REST: self._is_rest,
             self.STOP:self._is_stop,
             self.RUNNING: self._is_running,
         }
 
         self.state_with_update_handler: dict[str, Callable] = {
+            self.HAND_OVER: self._handle_macine_on_handover,
             self.REST: self._handle_machine_on_rest,
             self.STOP:self._handle_machine_on_stop,
             self.RUNNING: self._handle_machine_on_run
@@ -40,8 +43,8 @@ class MachineStateController:
 
         self.due_takt_time_seconds = self.actual_takt_time_seconds
 
-        self.rest_listener = RestListener()
-        self.rest_listener.listen()
+        self.server_listener = ServerListener()
+        self.server_listener.listen()
     
 
     @property
@@ -62,17 +65,25 @@ class MachineStateController:
         return self.current_state == self.RUNNING
 
     def _is_rest(self) -> bool:
-        return False#self.rest_listener.is_rest
+        return self.server_listener.is_rest
+
+    def _is_hand_over(self) -> bool:
+        return self.server_listener.is_hand_over
 
 
     def _handle_machine_on_stop(self) -> None:
         # basically do nothing, just waiting
         ...
 
+    def _handle_macine_on_handover(self) -> None:
+        self.restart()
+
     def _handle_machine_on_rest(self) -> None:
         # basically do nothing, just waiting
         ...
 
+    def restart(self) -> None:
+        self = self.__init__(self.config)
     
     def _handle_takt_time_offset(self) -> None:
         self.takt_time_offset_seconds += -(self.due_takt_time_seconds) # it becomes negative so negate it.

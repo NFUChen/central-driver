@@ -16,6 +16,10 @@ services:
     build:
       context: ./backend
       dockerfile: dockerfile
+    environment:
+      - BROKER_HOST=twn-pdb.sram.com
+      - LINE_NAME=Shifter
+      - LINE_IDX=3
     ports:
       - "8080:8080"
 
