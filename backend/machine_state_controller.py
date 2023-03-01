@@ -101,7 +101,6 @@ class MachineStateController:
 
     def receive_actual_output_signal(self) -> None:
         self.actual += 1
-        self._reset_due_takt_time_seconds()
         if self.current_state == self.STOP:
             self.current_state = self.RUNNING
 
