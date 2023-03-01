@@ -2,13 +2,15 @@ version: '3.3'
 services:
   dsp:
     restart: always
-    image: central-driver-dsp
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
     ports:
       - "3000:3000"
-    
+
     stdin_open: true
     tty: true
-    
+
   server:
     restart: always
     build:
@@ -16,6 +18,6 @@ services:
       dockerfile: dockerfile
     ports:
       - "8080:8080"
-    
+
     stdin_open: true
     tty: true
