@@ -1,6 +1,8 @@
 version: '3.3'
 services:
   dsp:
+    container_name: dsp
+    # networks: central-driver
     restart: always
     build:
       context: ./frontend
@@ -12,6 +14,8 @@ services:
     tty: true
 
   server:
+    container_name: server
+    # networks: central-driver
     restart: always
     build:
       context: ./backend
@@ -19,7 +23,7 @@ services:
     environment:
       - BROKER_HOST=twn-pdb.sram.com
       - LINE_NAME=Shifter
-      - LINE_IDX=3
+      - LINE_IDX=4
     ports:
       - "8080:8080"
 
