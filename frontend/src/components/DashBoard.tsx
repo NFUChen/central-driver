@@ -133,8 +133,6 @@ export const DashBoard = () => {
             }
             {isLoading || <BoxContainer>
                 <InfoSection items={items} />
-                <TaktTimeSlider defaultValue={currentRatio} actualTaktTime={actualTaktTimeSeconds} />
-                <TaktTimeTextField defaultTaktTime={configTaktTimeSeconds} />
                 <CommandSection currentState={currentState} />
             </BoxContainer>}
 

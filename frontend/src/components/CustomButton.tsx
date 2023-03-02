@@ -1,18 +1,7 @@
 import { Button, Typography } from "@mui/material";
+import { ButtonProps, ButtonTextProps } from "./interface"
 
 
-
-interface CommandButtonProps {
-    fontSize: string
-    label: string
-    isDisabled?: boolean
-    onClick: () => void
-}
-
-interface ButtonTextProps {
-    label: string
-    fontSize: string
-}
 
 const ButtonText: React.FC<ButtonTextProps> = ({ label, fontSize }) => {
 
@@ -31,12 +20,12 @@ const ButtonText: React.FC<ButtonTextProps> = ({ label, fontSize }) => {
     )
 }
 
-export const CommandButton: React.FC<CommandButtonProps> = ({ fontSize, label, onClick, isDisabled }) => {
+export const CustomButton: React.FC<ButtonProps> = ({ fontSize, label, onClick, backgroundColor }) => {
 
     const buttonStyle = {
         borderRadius: "1rem",
         color: "black",
-        backgroundColor: (label === "STOP") ? "red" : "lime",
+        backgroundColor: backgroundColor,
         padding: "1rem 11.6rem",
         margin: "0.3rem",
     }
