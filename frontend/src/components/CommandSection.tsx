@@ -28,7 +28,7 @@ export const CommandSection: React.FC<CommandSectionProps> = ({ currentState }) 
     const isStop: boolean = currentState === "stop"
     const GET_URL = isStop ? START_URL : STOP_URL
     const buttonLabel = isStop ? "START" : "STOP"
-    const buttonColor = isStop ? "red" : "lime"
+    const buttonColor = isStop ? "lime" : "red"
 
     const handleClick = () => {
         callApi(GET_URL)
