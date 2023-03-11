@@ -50,7 +50,7 @@ export const DashBoard = () => {
 
     const { response, isError, errorMessage, isLoading } = useFetch<ReportProps>(REPORT_URL, 0.5)
     const REST = "rest"
-    const isRest = response.current_state !== REST
+    const isRest = response.current_state === REST
 
     let {
         target,
