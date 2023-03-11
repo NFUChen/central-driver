@@ -55,8 +55,8 @@ export const CommandSection: React.FC<CommandSectionProps> = ({ currentState }) 
     return (<>
         <Stack>
             {partButtons.map(
-                ({ fontSize, label, onClick }) => {
-                    return <CustomButton fontSize={fontSize} label={label} onClick={onClick} backgroundColor="white" />
+                ({ fontSize, label, onClick }, idx) => {
+                    return <CustomButton key={idx} fontSize={fontSize} label={label} onClick={onClick} backgroundColor="white" />
                 }
             )}
         </Stack>

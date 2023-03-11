@@ -10,6 +10,7 @@ import { CommandSection } from "./CommandSection"
 import { REPORT_URL } from "./ApiURL"
 import { CustomBackdrop } from "./CustomBackDrop"
 import { RestText } from "./RestText";
+import { useFetch } from "./hooks/useFectch";
 
 interface ItemsProps {
     label: string
@@ -47,51 +48,17 @@ interface ReportProps {
 
 export const DashBoard = () => {
 
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [isRest, setIsRest] = useState<boolean>(false)
-    const [report, setReport] = useState<ReportProps>({})
-
-
+    const { response, isError, errorMessage, isLoading } = useFetch<ReportProps>(REPORT_URL, 0.5)
     const REST = "rest"
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            axios
-                .get(REPORT_URL)
-                .then((response) => {
-                    const { data } = response
-                    setReport(data)
-                    setIsLoading(false)
-                    if (data.current_state == REST) {
-                        setIsRest(true)
-                    } else {
-                        setIsRest(false)
-                    }
-
-                })
-                .catch((error) => {
-                    console.log(error);
-                    setIsLoading(true)
-                });
-        }, 200);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
-
+    const isRest = response.current_state !== REST
 
     let {
         target,
         current_state: currentState,
         due_takt_time_seconds: dueTaktTimeSeconds,
-        config_takt_time_seconds: configTaktTimeSeconds,
-        actual_takt_time_seconds: actualTaktTimeSeconds,
-        current_ratio: currentRatio,
         actual,
         diff,
-    } = report
-    console.log(report);
+    } = response
 
     const stateColor = (currentState === "stop") || (diff < 0) ? "red" : "lime"
 
@@ -126,8 +93,8 @@ export const DashBoard = () => {
         <>
             {
                 backDrops.map(
-                    ({ isOpen, component }) => {
-                        return <CustomBackdrop isOpen={isOpen} component={component} />
+                    ({ isOpen, component }, idx) => {
+                        return <CustomBackdrop key={idx} isOpen={isOpen} component={component} />
                     }
                 )
             }
