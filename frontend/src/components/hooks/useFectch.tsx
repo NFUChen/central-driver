@@ -19,6 +19,7 @@ export const useFetch = <T,>(apiUrl: string, intervalTimeSeconds: number): Respo
             .then(
                 (response) => {
                     setResponse(response.data)
+                    setIsError(false)
                 }
             ).catch(
                 (error) => {
