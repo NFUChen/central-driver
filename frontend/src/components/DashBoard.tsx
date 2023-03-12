@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import CircularProgress from '@mui/material/CircularProgress';
-
 import { MachineInfo } from "./MachineInfo"
 import { BoxContainer } from "./BoxContainer"
-import { TaktTimeSlider } from "./TaktTimeSlider"
-import { TaktTimeTextField } from "./TaktTimeTextField"
 import { CommandSection } from "./CommandSection"
 import { REPORT_URL } from "./ApiURL"
 import { CustomBackdrop } from "./CustomBackDrop"
 import { RestText } from "./RestText";
 import { useFetch } from "./hooks/useFectch";
+import { NetworkProblemGIF } from "./NetworkProblemGIF";
 
 interface ItemsProps {
     label: string
@@ -81,12 +76,10 @@ export const DashBoard = () => {
     ]
 
 
-
     const backDrops = [
-        { isOpen: isLoading, component: < CircularProgress color="inherit" /> },
+        { isOpen: isError, component: <NetworkProblemGIF /> },
         { isOpen: isRest, component: <RestText /> }
     ]
-
 
 
     return (
@@ -102,7 +95,6 @@ export const DashBoard = () => {
                 <InfoSection items={items} />
                 <CommandSection currentState={currentState} />
             </BoxContainer>}
-
         </>
 
     )
