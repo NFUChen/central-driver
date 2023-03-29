@@ -33,6 +33,9 @@ class MachineStateController:
 
         self.sleep_time = 1.0
 
+        self.HIBERNATION_THRESHOLD_SECONDS = 120
+        self.due_hibernation_time_seconds = 0
+
         self.current_ratio = 1.0
 
         self.current_state = self.STOP
@@ -84,6 +87,9 @@ class MachineStateController:
 
     def restart(self) -> None:
         self = self.__init__(self.config)
+
+    def _reset_due_hibernation_time_seconds(self) -> None:
+        self.due_hibernation_time_seconds = 0
     
     def _handle_takt_time_offset(self) -> None:
         self.takt_time_offset_seconds += -(self.due_takt_time_seconds) # it becomes negative so negate it.
@@ -94,6 +100,10 @@ class MachineStateController:
     def _handle_machine_on_run(self) -> None:
         
         self.due_takt_time_seconds -= 1
+        self.due_hibernation_time_seconds += 1
+        if self.due_hibernation_time_seconds == self.HIBERNATION_THRESHOLD_SECONDS:
+            self.current_state = self.STOP
+
         if self.due_takt_time_seconds < 0:
             self.target += 1
             self._handle_takt_time_offset()
@@ -112,6 +122,7 @@ class MachineStateController:
 
     def receive_actual_output_signal(self) -> None:
         self.actual += 1
+        self._reset_due_hibernation_time_seconds()
         if self.current_state == self.STOP:
             self.current_state = self.RUNNING
 
@@ -159,6 +170,7 @@ class MachineStateController:
             "target": self.target,
             "diff": self.diff,
             "current_ratio": self.current_ratio,
+            "due_hibernation_time_seconds": self.due_hibernation_time_seconds,
             "takt_time_offset_seconds": self.takt_time_offset_seconds,
             "due_takt_time_seconds": round(self.due_takt_time_seconds, 2),
             "config_takt_time_seconds": round(self.config.takt_time_seconds, 2),
