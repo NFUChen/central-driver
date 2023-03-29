@@ -5,3 +5,4 @@ export const START_URL: string = `${BASE_URL}/start`
 export const STOP_URL: string = `${BASE_URL}/stop`
 export const SET_RATIO_URL: string = `${BASE_URL}/set_ratio`
 export const SET_TAKT_TIME_URL: string = `${BASE_URL}/set_takt_time`
+export const RESTART_URL: string = `${BASE_URL}/restart`
